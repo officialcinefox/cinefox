@@ -1410,8 +1410,15 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
       // Extract Trailer and Teaser
       const videos = data.videos?.results || [];
-      const trailer = videos.find((v: any) => v.type === 'Trailer' && v.site === 'YouTube');
-      const teaser = videos.find((v: any) => v.type === 'Teaser' && v.site === 'YouTube') || videos.find((v: any) => v.type === 'Clip' && v.site === 'YouTube');
+      let trailer = videos.find((v: any) => v.type === 'Trailer' && v.site === 'YouTube' && v.official);
+      if (!trailer) trailer = videos.find((v: any) => v.type === 'Trailer' && v.site === 'YouTube');
+      if (!trailer) trailer = videos.find((v: any) => v.type === 'Teaser' && v.site === 'YouTube');
+      if (!trailer) trailer = videos.find((v: any) => v.site === 'YouTube');
+
+      let teaser = videos.find((v: any) => v.type === 'Teaser' && v.site === 'YouTube' && v.key !== trailer?.key);
+      if (!teaser) teaser = videos.find((v: any) => v.type === 'Clip' && v.site === 'YouTube' && v.key !== trailer?.key);
+      if (!teaser) teaser = videos.find((v: any) => v.key !== trailer?.key && v.site === 'YouTube');
+
       const trailerUrl = trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : undefined;
       const teaserUrl = teaser && teaser.key !== trailer?.key ? `https://www.youtube.com/watch?v=${teaser.key}` : undefined;
 
@@ -1489,8 +1496,15 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
       // Extract Trailer and Teaser
       const videos = data.videos?.results || [];
-      const trailer = videos.find((v: any) => v.type === 'Trailer' && v.site === 'YouTube');
-      const teaser = videos.find((v: any) => v.type === 'Teaser' && v.site === 'YouTube') || videos.find((v: any) => v.type === 'Clip' && v.site === 'YouTube');
+      let trailer = videos.find((v: any) => v.type === 'Trailer' && v.site === 'YouTube' && v.official);
+      if (!trailer) trailer = videos.find((v: any) => v.type === 'Trailer' && v.site === 'YouTube');
+      if (!trailer) trailer = videos.find((v: any) => v.type === 'Teaser' && v.site === 'YouTube');
+      if (!trailer) trailer = videos.find((v: any) => v.site === 'YouTube');
+
+      let teaser = videos.find((v: any) => v.type === 'Teaser' && v.site === 'YouTube' && v.key !== trailer?.key);
+      if (!teaser) teaser = videos.find((v: any) => v.type === 'Clip' && v.site === 'YouTube' && v.key !== trailer?.key);
+      if (!teaser) teaser = videos.find((v: any) => v.key !== trailer?.key && v.site === 'YouTube');
+
       const trailerUrl = trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : undefined;
       const teaserUrl = teaser && teaser.key !== trailer?.key ? `https://www.youtube.com/watch?v=${teaser.key}` : undefined;
 
