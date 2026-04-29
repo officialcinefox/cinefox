@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: #141414;
+    color: white;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer utilities {
+  @keyframes mobile-drawer-in {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes profile-panel-in {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .animate-mobile-drawer {
+    animation: mobile-drawer-in 220ms ease-out both;
+  }
+
+  .profile-panel-slide {
+    animation: profile-panel-in 240ms ease-out both;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .pause-on-hover:hover {
+    animation-play-state: paused;
+  }
+}
