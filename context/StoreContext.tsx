@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo, useRef } from 'react';
 import { User as SupabaseUser } from '@supabase/supabase-js';
-import { User, Movie, CastMember, WatchProvider } from '../types';
+import { User, Movie, CastMember, WatchProvider, Actor } from '../types';
 import { MOCK_MOVIES, OTT_PROVIDERS } from '../constants';
 import { isSupabaseConfigured, supabase } from '../lib/supabase';
 
@@ -37,6 +37,8 @@ interface StoreContextType {
   getSearchSuggestions: (query: string) => Promise<Movie[]>;
   getMovie: (id: string) => Promise<Movie | null>;
   getSeries: (id: string) => Promise<Movie | null>;
+  getActor: (id: string) => Promise<Actor | null>;
+  getActorMovies: (id: string) => Promise<Movie[]>;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   isLoading: boolean;
@@ -1517,6 +1519,58 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
+  const getActor = async (id: string): Promise<Actor | null> => {
+    try {
+      const params = buildTmdbParams();
+      const response = await fetchTmdb(`/person/${id}`, params);
+      const data = await response.json();
+      
+      return {
+        id: data.id,
+        name: data.name,
+        biography: data.biography,
+        birthday: data.birthday,
+        place_of_birth: data.place_of_birth,
+        profile_path: data.profile_path,
+        known_for_department: data.known_for_department,
+        deathday: data.deathday,
+      };
+    } catch (error) {
+      console.error('Error fetching actor details:', error);
+      return null;
+    }
+  };
+
+  const getActorMovies = async (id: string): Promise<Movie[]> => {
+    try {
+      const params = buildTmdbParams();
+      const response = await fetchTmdb(`/person/${id}/movie_credits`, params);
+      const data = await response.json();
+      
+      const cast = getResults({ results: data.cast });
+      return cast
+        .sort((a: any, b: any) => b.popularity - a.popularity)
+        .slice(0, 20)
+        .map((m: any) => ({
+          id: String(m.id),
+          title: m.title,
+          posterUrl: m.poster_path ? `${IMAGE_BASE_URL}${m.poster_path}` : 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?auto=format&fit=crop&w=1000&q=80',
+          backdropUrl: m.backdrop_path ? `${IMAGE_BASE_URL}${m.backdrop_path}` : 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?auto=format&fit=crop&w=1000&q=80',
+          rating: Number((m.vote_average || 0).toFixed(1)),
+          year: getReleaseYear(m),
+          duration: '',
+          genre: getGenreNames(m),
+          description: m.overview || '',
+          director: '',
+          cast: [],
+          mediaType: 'movie'
+        }));
+    } catch (error) {
+      console.error('Error fetching actor movies:', error);
+      return [];
+    }
+  };
+
   return (
     <StoreContext.Provider value={{
       user,
@@ -1551,6 +1605,8 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       getSearchSuggestions,
       getMovie,
       getSeries,
+      getActor,
+      getActorMovies,
       searchQuery,
       setSearchQuery,
       isLoading,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Star, Clock, Calendar, Heart, Tv, User, MonitorPlay, Youtube, PlayCircle } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { MovieRow } from '../components/MovieRow';
@@ -229,14 +229,18 @@ export const MovieDetail: React.FC<MovieDetailProps> = ({ mediaType = 'movie' })
                         <div className="flex flex-wrap gap-3">
                         {movie.cast && movie.cast.length > 0 ? (
                             movie.cast.slice(0, 5).map(person => (
-                                <div key={person.id} className="flex items-center gap-2 bg-zinc-900/80 pr-3 rounded-full border border-zinc-700/50">
+                                <Link 
+                                  to={`/person/${person.id}`} 
+                                  key={person.id} 
+                                  className="flex items-center gap-2 bg-zinc-900/80 pr-3 rounded-full border border-zinc-700/50 hover:bg-zinc-800 hover:border-netflix-red transition cursor-pointer"
+                                >
                                     {person.profile_path ? (
                                     <img src={person.profile_path} alt={person.name} className="w-8 h-8 rounded-full object-cover" />
                                     ) : (
                                     <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center text-xs">{person.name[0]}</div>
                                     )}
                                     <span className="text-sm font-medium">{person.name}</span>
-                                </div>
+                                </Link>
                             ))
                         ) : (
                             <span className="text-gray-400">Cast info unavailable</span>

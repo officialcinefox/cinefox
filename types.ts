@@ -43,6 +43,17 @@ export interface User {
   note?: string;
 }
 
+export interface Actor {
+  id: number;
+  name: string;
+  biography: string;
+  birthday: string | null;
+  place_of_birth: string | null;
+  profile_path: string | null;
+  known_for_department: string;
+  deathday: string | null;
+}
+
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;

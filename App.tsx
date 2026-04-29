@@ -15,6 +15,7 @@ import { AboutUs } from './pages/AboutUs';
 import { TermsOfService } from './pages/TermsOfService';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { ResetPassword } from './pages/ResetPassword';
+import { ActorDetail } from './pages/ActorDetail';
 
 const ScrollToTop = () => {
   const location = useLocation();
@@ -73,6 +74,7 @@ const App: React.FC = () => {
           <Route path="/profile" element={<LayoutRoute><Profile /></LayoutRoute>} />
           <Route path="/movie/:id" element={<LayoutRoute><MovieDetail /></LayoutRoute>} />
           <Route path="/series/:id" element={<LayoutRoute><MovieDetail mediaType="tv" /></LayoutRoute>} />
+          <Route path="/person/:id" element={<LayoutRoute><ActorDetail /></LayoutRoute>} />
           <Route path="/about" element={<LayoutRoute><AboutUs /></LayoutRoute>} />
           <Route path="/terms" element={<LayoutRoute><TermsOfService /></LayoutRoute>} />
           <Route path="/privacy" element={<LayoutRoute><PrivacyPolicy /></LayoutRoute>} />
