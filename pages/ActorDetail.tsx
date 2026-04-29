@@ -4,7 +4,7 @@ import { Calendar, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { MovieCard } from '../components/MovieCard';
 import { Actor, Movie } from '../types';
-import { LoadingDetailSkeleton } from '../components/Skeletons';
+import { DetailSkeleton } from '../components/Skeletons';
 
 export const ActorDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -39,7 +39,7 @@ export const ActorDetail = () => {
   }, [id, getActor, getActorMovies]);
 
   if (isLoading) {
-    return <LoadingDetailSkeleton />;
+    return <DetailSkeleton />;
   }
 
   if (!actor) {
