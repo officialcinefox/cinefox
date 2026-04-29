@@ -645,7 +645,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const client = getSupabaseClient();
     setAuthError('');
 
-    const redirectTo = `${window.location.origin}${window.location.pathname}#/reset-password`;
+    const redirectTo = `${window.location.origin}/reset-password`;
     const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
 
     if (error) {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { HashRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import { StoreProvider } from './context/StoreContext';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
@@ -62,7 +62,7 @@ const AuthRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const App: React.FC = () => {
   return (
     <StoreProvider>
-      <HashRouter>
+      <BrowserRouter>
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<LayoutRoute><Home /></LayoutRoute>} />
@@ -83,7 +83,7 @@ const App: React.FC = () => {
           
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
     </StoreProvider>
   );
 };
